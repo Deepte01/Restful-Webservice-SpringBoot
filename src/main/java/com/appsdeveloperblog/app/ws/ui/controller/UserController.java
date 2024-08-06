@@ -2,6 +2,7 @@ package com.appsdeveloperblog.app.ws.ui.controller;
 
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE,
     })
-    public ResponseEntity<UserRest> createUser(@RequestBody UserDetailsRequestModel details){
+    public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel details){
         UserRest user = new UserRest();
         user.setFirstName(details.getFirstName());
         user.setLastName(details.getLastName());

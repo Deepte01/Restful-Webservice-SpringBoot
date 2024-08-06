@@ -1,8 +1,14 @@
 package com.appsdeveloperblog.app.ws.ui.model.request;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 public class UserDetailsRequestModel {
+    @NotNull(message="First name cannot be null.")
     private String FirstName;
+    @NotNull(message="Last name cannot be null.")
     private String LastName;
+    @NotNull(message="Email cannot be null.")
+    @Email
     private String Email;
 
     public String getFirstName() {
