@@ -17,7 +17,7 @@ public class UserDetailsRequestModel {
 
     public void setFirstName(String firstName) {
         FirstName = firstName;
-    }
+    } 
 
     public String getLastName() {
         return LastName;

@@ -1,5 +1,6 @@
 package com.appsdeveloperblog.app.ws.ui.controller;
 
+import com.appsdeveloperblog.app.ws.ui.model.request.UpdateUserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
 import jakarta.validation.Valid;
@@ -7,9 +8,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
+    Map<String, UserRest> users;
     @GetMapping()
     public String getUser(@RequestParam(value="page", defaultValue = "1", required = false) int page,
                           @RequestParam(value="limit", defaultValue = "50") int limit,
@@ -46,14 +50,30 @@ public class UserController {
         user.setEmail(details.getEmail());
         return  ResponseEntity.ok(user);
     }
-    @PutMapping
-    public String updateUser()
+    @PutMapping(path="/{userId}", consumes =  {
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+    },
+            produces =  {
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }  )
+    public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UpdateUserDetailsRequestModel userDetails)
     {
-        return "update user is called.";
+        UserRest storedUserDetails = users.get(userId);
+        storedUserDetails.setFirstName(userDetails.getFirstName());
+        storedUserDetails.setLastName(userDetails.getLastName());
+
+        users.put(userId, storedUserDetails);
+
+        return storedUserDetails;
     }
-    @DeleteMapping
-    public String deleteUser()
+
+    @DeleteMapping(path="/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id)
     {
-        return "delete user is called.";
+        users.remove(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
